@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Order;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'users')]
 class User
 {
     #[ORM\Id]
@@ -21,6 +23,12 @@ class User
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
+
+    /**
+     * @ManyToOne(targetEntity="Order")
+     * @JoinColumn(name="order_id", referencedColumnName="id")
+     */
+    private Order|null $order = null;
 
 
     public function getId(): ?int

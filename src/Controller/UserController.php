@@ -76,6 +76,24 @@ class UserController extends AbstractController
     }
 
 
+    #[Route('/user/{user}', name: 'edit', methods: ['PATCH'])]
+    public function edit(User $user, ManagerRegistry $doctrine, Request $request): JsonResponse
+    {
+
+        $parameters = json_decode($request->getContent(), true);
+
+        $user->setFirstName($parameters['first_name']);
+        $user->setLastName($parameters['last_name']);
+        $user->setEmail($parameters['email']);
+
+        $doctrine->getManager()->persist($user);
+        $doctrine->getManager()->flush();
+
+        return new JsonResponse('', 204);
+    }
+
+
+
     #[Route('/user/{user}', name: 'delete', methods: ['DELETE'])]
     public function delete(ManagerRegistry $doctrine, User $user): JsonResponse
     {
